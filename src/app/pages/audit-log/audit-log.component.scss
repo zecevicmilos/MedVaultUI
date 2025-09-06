@@ -1,0 +1,338 @@
+/* =========================================================
+   MedVault — Audit Log (card + table) — SCSS
+   Isti dizajn/tokeni kao prethodna komponenta (plava mreža + krst)
+   ========================================================= */
+
+/* ---------- Design tokens ---------- */
+:host{
+  --text: #102a37;
+  --muted: #64748b;
+
+  --mv-bg-base: #f2f7ff;     /* very light blue */
+  --mv-grid-dot: #cfe2ff;    /* dots */
+  --mv-cross: #002245;       /* cross glyphs */
+
+  --mv-btn-start: #cfe2ff;   /* kept for consistency */
+  --mv-btn-end: #eaf3ff;
+
+  --ow-3: #ffffff;           /* card white */
+  --blue-100: #eaf3ff;       /* light blue ring */
+  --ring-blue: rgba(59, 130, 246, .22);
+  --border: rgba(15, 23, 42, .10);
+
+  --shadow-1: 0 8px 24px rgba(15, 23, 42, .06), 0 2px 8px rgba(15, 23, 42, .04);
+  --shadow-2: 0 16px 40px rgba(15, 23, 42, .08), 0 4px 14px rgba(15, 23, 42, .06);
+
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+
+  --space-1: .5rem;
+  --space-2: .75rem;
+  --space-3: 1rem;
+  --space-4: 1.25rem;
+  --space-5: 1.75rem;
+  --space-6: 2.25rem;
+
+  --focus-w: 3px;
+
+  color: var(--text);
+}
+
+*,
+*::before,
+*::after{ box-sizing: border-box; }
+
+/* Transparent main shells (ako postoji wrapper iz vanjskog layouta) */
+:host,
+:host ::ng-deep html,
+:host ::ng-deep body,
+:host ::ng-deep app-root{
+  background-color: var(--mv-bg-base) !important;
+  background-attachment: fixed !important;
+  min-height: 100vh;
+}
+:host ::ng-deep main.container,
+:host ::ng-deep .container,
+:host ::ng-deep .container-fluid,
+:host ::ng-deep .content,
+:host ::ng-deep main{
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* ---------- Background pattern (dots + krst) vezano za čitav host ---------- */
+:host::before{
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-color: var(--mv-bg-base);
+  background-image:
+    url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'>\
+<rect width='44' height='44' fill='none'/>\
+<circle cx='22' cy='22' r='1.2' fill='%23cfe2ff'/>\
+</svg>");
+  background-size: 44px 44px;
+  background-repeat: repeat;
+  background-position: 0 0;
+  opacity: .7;
+}
+:host::after{
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+  background-size: 220px 220px, 180px 180px, 240px 240px, 200px 200px;
+  background-position:
+    left -32px top -24px,
+    right -24px top 18%,
+    left 8% bottom -36px,
+    right -18px bottom -28px;
+  background-image:
+    url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'>\
+<path d='M50 0h20v50h50v20H70v50H50V70H0V50h50z' fill='%23002245' fill-opacity='.06'/>\
+</svg>"),
+    url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'>\
+<path d='M50 0h20v50h50v20H70v50H50V70H0V50h50z' fill='%23002245' fill-opacity='.05'/>\
+</svg>"),
+    url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'>\
+<path d='M50 0h20v50h50v20H70v50H50V70H0V50h50z' fill='%23002245' fill-opacity='.045'/>\
+</svg>"),
+    url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'>\
+<path d='M50 0h20v50h50v20H70v50H50V70H0V50h50z' fill='%23002245' fill-opacity='.05'/>\
+</svg>");
+}
+
+/* ---------- Card ---------- */
+.card{
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  background: linear-gradient(180deg, var(--ow-3), #fbfdff);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+  padding: clamp(1rem, calc(.9rem + 1.2vw), 1.75rem);
+  isolation: isolate;
+  animation: cardIn 420ms ease-out both;
+}
+
+/* subtle inner gloss */
+.card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius: inherit;
+  pointer-events:none;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.75);
+}
+
+.card:hover{
+  box-shadow: var(--shadow-2);
+  transform: translateY(-1px);
+  transition: box-shadow .25s ease, transform .2s ease;
+}
+.card:active{ transform: translateY(0); }
+
+/* ---------- Title ---------- */
+.card h3{
+  margin: 0 0 var(--space-3) 0;
+  font-weight: 800;
+  letter-spacing: .2px;
+  font-size: clamp(1.1rem, calc(1rem + .6vw), 1.5rem);
+  color: #163248;
+}
+
+/* ---------- Helpers ---------- */
+.mt{ margin-top: var(--space-3); }
+.muted{ color: var(--muted); }
+
+/* ---------- Table ---------- */
+.table{
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  display: block;               /* responsive scroll */
+  overflow-x: auto;
+  white-space: nowrap;
+  border: 1px solid color-mix(in srgb, var(--blue-100) 35%, var(--border));
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, #ffffff, #fbfdff);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.9) inset,
+    0 2px 8px rgba(15, 23, 42, .04);
+}
+
+/* Header */
+.table thead{ position: sticky; top: 0; z-index: 2; }
+.table thead th{
+  position: sticky; top: 0;
+  text-align: left;
+  font-weight: 700;
+  letter-spacing: .18px;
+  font-size: .92rem;
+  color: #27425d;
+  background:
+    linear-gradient(180deg, #f4f8ff, #eaf3ff);
+  border-bottom: 1px solid color-mix(in srgb, var(--blue-100) 45%, var(--border));
+  padding: var(--space-2) var(--space-3);
+  box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
+}
+.table thead th:first-child{ border-top-left-radius: var(--radius-md); }
+.table thead th:last-child{ border-top-right-radius: var(--radius-md); }
+
+/* Cells */
+.table td{
+  padding: var(--space-2) var(--space-3);
+  border-top: 1px solid color-mix(in srgb, var(--blue-100) 30%, var(--border));
+  color: #17354d;
+  font-size: .96rem;
+  line-height: 1.45;
+  background: linear-gradient(180deg, #ffffff, #fcfdff 65%);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Zebra */
+.table tbody tr:nth-child(even) td{
+  background: linear-gradient(180deg, #fbfeff, #f6fbff 70%);
+}
+
+/* Hover highlight */
+.table tbody tr{
+  transition: background .18s ease, box-shadow .18s ease, transform .06s ease;
+}
+.table tbody tr:hover td{
+  background: linear-gradient(180deg, #f7fbff, #eef6ff 70%);
+  box-shadow: 0 -1px 0 rgba(255,255,255,.9) inset, 0 1px 0 rgba(255,255,255,.7) inset;
+}
+
+/* Alignments by column */
+.table td:nth-child(1){ min-width: 150px; }
+.table td:nth-child(2){ min-width: 140px; }
+.table td:nth-child(3){ min-width: 150px; }
+.table td:nth-child(4){ min-width: 200px; color:#2a4b6a; }
+.table td:nth-child(5){
+  text-align: center; min-width: 90px;
+  font-weight: 700; letter-spacing:.2px;
+  /* neutral tint for ✔ / ✖ (HTML ne menja se) */
+  color: #17354d;
+}
+.table td:nth-child(6){ min-width: 240px; }
+
+/* Row focus (keyboard nav in tabeli) */
+.table :focus-visible{
+  outline: var(--focus-w) solid rgba(59, 130, 246, .30);
+  outline-offset: -3px;
+}
+
+/* Round bottom corners */
+.table tbody tr:last-child td:first-child{ border-bottom-left-radius: var(--radius-md); }
+.table tbody tr:last-child td:last-child{ border-bottom-right-radius: var(--radius-md); }
+
+/* Empty state */
+.card p > .muted{
+  display: inline-block;
+  padding: .4rem .6rem;
+  border-radius: 10px;
+  background: #f3f7ff;
+  border: 1px solid color-mix(in srgb, var(--blue-100) 35%, var(--border));
+}
+
+/* ---------- Motion prefs ---------- */
+@media (prefers-reduced-motion: reduce){
+  .card{ animation: none; }
+  .table tbody tr{ transition: none; }
+}
+
+/* ---------- Contrast prefs ---------- */
+@media (prefers-contrast: more){
+  .table{ border-color: rgba(15,23,42,.35); }
+  .table thead th{ border-bottom-color: rgba(15,23,42,.28); }
+  .table td{ border-top-color: rgba(15,23,42,.28); }
+}
+
+/* ---------- Keyframes ---------- */
+@keyframes cardIn{
+  0%{ transform: translateY(8px); opacity: 0; }
+  100%{ transform: translateY(0); opacity: 1; }
+}
+
+/* ---------- Fallback radius ---------- */
+@supports not (border-radius:20px){
+  .card{ border-radius: 12px; }
+  .table{ border-radius: 10px; }
+}
+
+/* =========================================================
+   Plavi „kontrast” preset (isti kao u login varijanti)
+   – tamno plavi krst, svetlija pozadina
+   ========================================================= */
+:host{
+  --mv-bg-base: #eef4ff;
+  --mv-grid-dot: #dbe7ff;
+  --mv-cross: #0f2f6b;
+}
+
+/* Header ton blago tamniji da „drži” tablu */
+.table thead th{
+  background: linear-gradient(180deg, #eef4ff, #e3eeff);
+  color: #0f2f6b;
+}
+/* ===== EMPTY STATE — swap normal/hover, tamno plav naslov ===== */
+
+/* Naslov: tamno plav + centriran */
+.card h3{
+  text-align: center;
+  color: #0f2f6b; /* tamno plava */
+  font-weight: 800;
+}
+
+/* Centriraj kontejner */
+.card p{
+  text-align: center;
+  margin: var(--space-4) 0 var(--space-5);
+}
+
+/* "Dugme" (small.muted) — NORMAL sada je svetlije (bivši :hover) */
+.card p .muted{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 22px;
+  font-size: clamp(1rem, .95rem + .2vw, 1.1rem);
+  font-weight: 700;
+  letter-spacing: .2px;
+  color: #fff; /* beli tekst */
+  background: linear-gradient(180deg, #2344a6 0%, #123276 100%); /* svetlije */
+  border: 1px solid rgba(10, 25, 61, .28);
+  border-radius: 9999px;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.9) inset,
+    0 10px 22px rgba(15,31,80,.20),
+    0 3px 8px rgba(15,31,80,.14);
+  margin-inline: auto; /* centriraj */
+  white-space: nowrap;
+}
+
+/* HOVER sada je tamnije (bivši normal) */
+.card p .muted:hover{
+  background: linear-gradient(180deg, #1a3a94 0%, #0f2f6b 100%); /* tamnije */
+}
+
+/* Focus ring */
+.card p .muted:focus-visible{
+  outline: var(--focus-w, 3px) solid rgba(59,130,246,.32);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 calc(var(--focus-w, 3px) + 1px) rgba(37,99,235,.28),
+              0 1px 0 rgba(255,255,255,.9) inset;
+}

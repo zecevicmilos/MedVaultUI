@@ -1,0 +1,56 @@
+<div class="card">
+  <h3>New Patient</h3>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="grid" style="grid-template-columns:1fr 1fr;" novalidate>
+    <div>
+      <div class="label">Medical Record Number</div>
+      <input class="input" formControlName="medicalRecordNumber" />
+    </div>
+
+    <div>
+      <div class="label">First Name</div>
+      <input class="input" formControlName="firstName" />
+    </div>
+
+    <div>
+      <div class="label">Last Name</div>
+      <input class="input" formControlName="lastName" />
+    </div>
+
+    <div>
+      <div class="label">JMBG</div>
+      <input
+        class="input"
+        formControlName="jmbg"
+        inputmode="numeric"
+        autocomplete="off"
+        spellcheck="false"
+        maxlength="13"
+        placeholder="13 digits"
+      />
+<small class="muted"
+       *ngIf="f['jmbg']?.touched && f['jmbg']?.invalid">
+  JMBG must be exactly 13 digits.
+</small>
+    </div>
+
+    <div>
+      <div class="label">Email</div>
+      <input class="input" type="email" formControlName="email" />
+    </div>
+
+    <div>
+      <div class="label">Phone</div>
+      <input class="input" formControlName="phone" />
+    </div>
+
+    <div>
+      <div class="label">Address</div>
+      <input class="input" formControlName="address" />
+    </div>
+
+    <div style="grid-column:1/-1" class="mt">
+      <button class="btn ok" type="submit" [disabled]="form.invalid || loading">Create</button>
+    </div>
+  </form>
+</div>

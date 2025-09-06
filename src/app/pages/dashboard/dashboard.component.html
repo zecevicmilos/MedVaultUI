@@ -1,0 +1,15 @@
+<div class="grid" style="grid-template-columns:1fr 1fr">
+<div class="card">
+<h3>Quick Actions</h3>
+<div class="row mt">
+<a class="btn pri" routerLink="/patients">Search Patients</a>
+<a class="btn ok" routerLink="/patients/create" *ngIf="auth.role==='Admin'">New Patient</a>
+<a class="btn" routerLink="/audit" *ngIf="auth.role==='Admin'">Audit</a>
+</div>
+<small class="muted">Role: {{auth.role || 'N/A'}}</small>
+</div>
+<div class="card">
+<h3>About</h3>
+<p>Upload and encrypt scans, manage identity docs, and log encounters.</p>
+</div>
+</div>

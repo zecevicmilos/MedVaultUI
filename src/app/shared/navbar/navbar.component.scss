@@ -1,0 +1,7 @@
+.nav{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:#fff;box-shadow:var(--shadow);position:sticky;top:0;z-index:5}
+.nav a{margin-right:12px;color:#334;text-decoration:none}
+.logo{font-size:20px;margin-right:8px}
+.badge{margin-right:12px}
+.toasts{position:fixed;right:16px;bottom:16px;display:flex;flex-direction:column;gap:8px}
+.toast{background:#111827;color:#fff;padding:10px 14px;border-radius:12px;opacity:.95}
+.toast.ok{background:#16a34a}.toast.err{background:#ef4444}.toast.warn{background:#f59e0b}

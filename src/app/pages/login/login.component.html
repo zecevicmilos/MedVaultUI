@@ -1,0 +1,15 @@
+<div class="login">
+    <div class="card">
+        <h1>MedVault</h1>
+        <p class="muted">Secure Medical Records</p>
+        <div class="mt">
+            <div class="label">Username</div>
+            <input class="input" [(ngModel)]="userName" placeholder="username" />
+        </div>
+        <div class="mt">
+            <div class="label">Password</div>
+            <input class="input" type="password" [(ngModel)]="password" placeholder="password" />
+        </div>
+        <button class="btn pri mt" (click)="submit()" [disabled]="loading">Login</button>
+    </div>
+</div>

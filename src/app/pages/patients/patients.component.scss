@@ -1,0 +1,417 @@
+:host{
+  --text: #102a37;
+  --muted: #64748b;
+  --mv-bg-base: #f2f7ff;
+  --mv-grid-dot: #cfe2ff;
+  --mv-cross: #002245;
+  --mv-btn-start: #cfe2ff;
+  --mv-btn-end: #eaf3ff;
+  --ow-3: #ffffff;
+  --blue-100: #eaf3ff;
+  --ring-blue: rgba(59,130,246,.22);
+  --border: rgba(15,23,42,.10);
+  --shadow-1: 0 8px 24px rgba(15,23,42,.06), 0 2px 8px rgba(15,23,42,.04);
+  --shadow-2: 0 16px 40px rgba(15,23,42,.08), 0 4px 14px rgba(15,23,42,.06);
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --space-1: .5rem;
+  --space-2: .75rem;
+  --space-3: 1rem;
+  --space-4: 1.25rem;
+  --space-5: 1.75rem;
+  --space-6: 2.25rem;
+  --focus-w: 3px;
+  color: var(--text);
+}
+
+*,
+*::before,
+*::after{ box-sizing: border-box; }
+
+:host,
+:host ::ng-deep html,
+:host ::ng-deep body,
+:host ::ng-deep app-root{
+  background-color: var(--mv-bg-base) !important;
+  background-attachment: fixed !important;
+  min-height: 100vh;
+}
+
+:host ::ng-deep main.container,
+:host ::ng-deep .container,
+:host ::ng-deep .container-fluid,
+:host ::ng-deep .content,
+:host ::ng-deep main{
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* ===== POZADINA SA TACKAMA + PLAVIM KRSTOM (na celom host-u) ===== */
+:host::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-color: var(--mv-bg-base);
+  background-image:
+    url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'>\
+<rect width='44' height='44' fill='none'/>\
+<circle cx='22' cy='22' r='1.2' fill='%23cfe2ff'/>\
+</svg>");
+  background-size: 44px 44px;
+  background-repeat: repeat;
+  background-position: 0 0;
+  opacity: .7;
+}
+:host::after{
+  content:"";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+  background-size: 220px 220px, 180px 180px, 240px 240px, 200px 200px;
+  background-position:
+    left -32px top -24px,
+    right -24px top 18%,
+    left 8% bottom -36px,
+    right -18px bottom -28px;
+  background-image:
+    url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'>\
+<path d='M50 0h20v50h50v20H70v50H50V70H0V50h50z' fill='%232f92ff' fill-opacity='.06'/>\
+</svg>"),
+    url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'>\
+<path d='M50 0h20v50h50v20H70v50H50V70H0V50h50z' fill='%232f92ff' fill-opacity='.05'/>\
+</svg>"),
+    url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'>\
+<path d='M50 0h20v50h50v20H70v50H50V70H0V50h50z' fill='%232f92ff' fill-opacity='.045'/>\
+</svg>"),
+    url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'>\
+<path d='M50 0h20v50h50v20H70v50H50V70H0V50h50z' fill='%232f92ff' fill-opacity='.05'/>\
+</svg>");
+}
+
+/* ===== KARTICA ===== */
+.card{
+  position: relative;
+  z-index: 1; /* iznad pozadine */
+  width: min(960px, 94vw);
+  background: linear-gradient(180deg, var(--ow-3), #fbfdff);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+  padding: clamp(1.25rem, calc(1rem + 2vw), 2.25rem);
+  isolation: isolate;
+  animation: cardIn 480ms ease-out both;
+  display: grid;
+  align-items: start;
+  row-gap: var(--space-3);
+  background-clip: padding-box;
+}
+.card::after{
+  content:"";
+  position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.75);
+  z-index:1;
+}
+
+/* Naslov (isto ponašanje kao h1 u login) */
+.card h3{
+  margin: 0 0 .35rem 0;
+  text-align: center;
+  color: var(--mv-btn-end, #0f2f6b);
+  font-weight: 800;
+  letter-spacing: .2px;
+  font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.2rem);
+}
+
+/* Spacing helper */
+.mt{ margin-top: var(--space-3); }
+.muted{ color: var(--muted); }
+
+/* ===== FILTERS RED ===== */
+.row{
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: var(--space-3);
+  align-items: end;
+}
+
+/* ===== INPUT ===== */
+.input{
+  width: 100%;
+  height: 52px;
+  border-radius: var(--radius-sm);
+  border: 1px solid color-mix(in srgb, var(--blue-100) 30%, var(--border));
+  background: linear-gradient(180deg, #ffffff, #fbfdff);
+  padding: 0 16px;
+  outline: none;
+  color: var(--text);
+  transition: border-color .2s ease, box-shadow .2s ease, background .2s ease, transform .06s ease;
+  box-shadow: 0 1px 0 rgba(255,255,255,.7);
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+.input::placeholder{ color:#7a90a8; opacity:.95; }
+.input:hover{
+  border-color: rgba(59,130,246,.30);
+  background: linear-gradient(180deg,#ffffff,#f9fcff);
+  box-shadow: 0 1px 0 rgba(255,255,255,.7), 0 2px 8px rgba(15,23,42,.04);
+}
+.input:focus{
+  border-color: rgba(59,130,246,.55);
+  background:#fff;
+  box-shadow: 0 0 0 calc(var(--focus-w) + 1px) var(--ring-blue), 0 1px 0 rgba(255,255,255,.7);
+}
+.input:disabled{ opacity:.7; cursor:not-allowed; background:#f6f9ff; }
+
+/* ===== BUTTONS – PLAVA (ISTO PONAŠANJE) ===== */
+.btn{
+  appearance: none;
+  border: 0;
+  border-radius: var(--radius-md);
+  padding: 0 18px;
+  height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  font-weight: 700;
+  letter-spacing: .2px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform .06s ease, box-shadow .2s ease, background .2s ease, color .2s ease, opacity .2s ease;
+  white-space: nowrap;
+  box-shadow: var(--shadow-1);
+  border-width: 1px;
+}
+.btn:focus-visible{
+  outline: var(--focus-w) solid rgba(59,130,246,.30);
+  outline-offset: 2px;
+}
+
+/* OK – svetloplava (i dalje plava) */
+.btn.ok{
+  color: #0f2640;
+  background: linear-gradient(180deg, var(--mv-btn-start) 0%, var(--mv-btn-end) 100%);
+  border: 1px solid rgba(15,23,42,.06);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.95) inset,
+    0 8px 18px rgba(29,78,216,.10),
+    0 2px 6px rgba(29,78,216,.08);
+}
+.btn.ok:hover{
+  transform: translateY(-1px);
+  color: #0c2138;
+  background: linear-gradient(180deg, #c3dbff 0%, #e1f0ff 100%);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.95) inset,
+    0 14px 28px rgba(29,78,216,.14),
+    0 6px 12px rgba(29,78,216,.12);
+}
+.btn.ok:active{
+  transform: translateY(0);
+  background: linear-gradient(180deg, #bad3ff 0%, #dbecff 100%);
+}
+
+/* PRI – tamnoplava (kao u override-u) */
+.btn.pri{
+  color: #ffffff;
+  background: linear-gradient(180deg, var(--mv-btn-start) 0%, var(--mv-btn-end) 100%);
+  border: 1px solid rgba(10,25,61,.28);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.85) inset,
+    0 10px 22px rgba(15,31,80,.20),
+    0 3px 8px rgba(15,31,80,.14);
+}
+.btn.pri:hover{
+  transform: translateY(-1px);
+  background: linear-gradient(180deg, #2344a6 0%, #123276 100%);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.9) inset,
+    0 16px 30px rgba(15,31,80,.26),
+    0 8px 16px rgba(15,31,80,.18);
+}
+.btn.pri:focus-visible{
+  outline: var(--focus-w) solid rgba(59,130,246,.32);
+  outline-offset: 2px;
+  box-shadow:
+    0 0 0 calc(var(--focus-w) + 1px) rgba(37,99,235,.28),
+    0 1px 0 rgba(255,255,255,.9) inset;
+}
+.btn.pri:active{
+  transform: translateY(0);
+  background: linear-gradient(180deg, #173688 0%, #0d2a66 100%);
+  box-shadow:
+    inset 0 2px 6px rgba(15,23,42,.12),
+    0 6px 14px rgba(15,31,80,.18),
+    0 3px 8px rgba(15,31,80,.14);
+}
+
+.btn:disabled,
+.btn[disabled]{ opacity:.65; cursor:not-allowed; transform:none; box-shadow:none; }
+
+/* ===== TABELA ===== */
+.table{
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 1px 0 rgba(255,255,255,.9);
+}
+.table thead th{
+  text-align: left;
+  font-weight: 800;
+  font-size: .95rem;
+  letter-spacing: .2px;
+  color: #12325a;
+  background: linear-gradient(180deg, #f5f9ff 0%, #eef4ff 100%);
+  border-bottom: 1px solid color-mix(in srgb, var(--blue-100) 40%, var(--border));
+  padding: .9rem 1rem;
+  position: sticky; top: 0; z-index: 1;
+}
+.table tbody td{
+  padding: .85rem 1rem;
+  border-bottom: 1px solid rgba(15,23,42,.06);
+  color: #1b2e43;
+  font-size: 1rem;
+}
+.table tbody tr:nth-child(even){ background: #fafcff; }
+.table tbody tr:hover{
+  background: #f1f6ff;
+  box-shadow: inset 0 1px 0 rgba(59,130,246,.06);
+}
+.table tbody tr:last-child td{ border-bottom: 0; }
+
+/* Kompaktnije dugme u tabeli */
+.table td .btn{ height: 44px; padding: 0 14px; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 880px){
+  .row{ grid-template-columns: 1fr; }
+  .btn.ok{ width: 100%; }
+}
+@media (max-width: 640px){
+  .card{ padding: 1.25rem 1rem 1.5rem; border-radius: 16px; }
+  .input, .btn{ height: 48px; }
+  .table{
+    display: block; overflow-x: auto; white-space: nowrap;
+    -webkit-overflow-scrolling: touch; border-radius: 12px;
+  }
+  .table thead th, .table tbody td{ padding: .75rem .9rem; }
+}
+
+/* ===== REDUCED MOTION / HIGH CONTRAST ===== */
+@media (prefers-reduced-motion: reduce){
+  .card, .btn, .input{ transition: none; animation: none; }
+}
+@media (prefers-contrast: more){
+  .input{ border-color: rgba(15,23,42,.35); }
+  .btn.pri{ border-color: rgba(15,23,42,.22); }
+}
+
+/* ===== FALLBACK ZA BORDER-RADIUS ===== */
+@supports not (border-radius:20px){
+  .card{ border-radius: 12px; }
+  .btn{ border-radius: 10px; }
+  .input{ border-radius: 8px; }
+}
+
+/* ===== ANIMACIJA ULAZA KARTICE ===== */
+@keyframes cardIn{
+  0%{ transform: translateY(8px); opacity: 0; }
+  100%{ transform: translateY(0); opacity: 1; }
+}
+
+/* ===== OVERRIDE BLOK — PLAVI KRST + TAMNOPLAVA DUGMAD (ISTO KAO U TVOM) ===== */
+:host{
+  --mv-bg-base: #eef4ff;
+  --mv-grid-dot: #dbe7ff;
+  --mv-cross: #0f2f6b;
+  --mv-btn-start: #1a3a94;
+  --mv-btn-end: #0f2f6b;
+}
+
+/* primeni tamnoplavu na krst/tačke kao u login varijanti */
+:host::after{
+  background-image:
+    url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'>\
+<path d='M50 0h20v50h50v20H70v50H50V70H0V50h50z' fill='%230f2f6b' fill-opacity='.18'/>\
+</svg>"),
+    url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'>\
+<path d='M50 0h20v50h50v20H70v50H50V70H0V50h50z' fill='%230f2f6b' fill-opacity='.14'/>\
+</svg>"),
+    url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'>\
+<path d='M50 0h20v50h50v20H70v50H50V70H0V50h50z' fill='%230f2f6b' fill-opacity='.16'/>\
+</svg>"),
+    url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'>\
+<path d='M50 0h20v50h50v20H70v50H50V70H0V50h50z' fill='%230f2f6b' fill-opacity='.15'/>\
+</svg>");
+}
+:host::before{
+  opacity: .75;
+  background-color: var(--mv-bg-base);
+  background-image:
+    url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'>\
+<rect width='44' height='44' fill='none'/>\
+<circle cx='22' cy='22' r='1.2' fill='%23dbe7ff'/>\
+</svg>");
+}
+
+/* naslov u boji dugmeta – kao ranije */
+.card h3{ color: var(--mv-btn-end, #0f2f6b); }
+/* === SEARCH dugme (btn.ok) — bela slova + tamnoplava podloga i u hover/active === */
+.btn.ok,
+.btn.ok:hover,
+.btn.ok:active{
+  color: #ffffff;
+  text-shadow: 0 1px 0 rgba(0,0,0,.18);
+}
+
+/* osnovno stanje: tamnoplavi gradient */
+.btn.ok{
+  background: linear-gradient(180deg, var(--mv-btn-start) 0%, var(--mv-btn-end) 100%);
+  border: 1px solid rgba(10,25,61,.28);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.85) inset,
+    0 10px 22px rgba(15,31,80,.20),
+    0 3px 8px rgba(15,31,80,.14);
+}
+
+/* hover ostaje dovoljno taman radi kontrasta */
+.btn.ok:hover{
+  transform: translateY(-1px);
+  background: linear-gradient(180deg, #2344a6 0%, #123276 100%);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.9) inset,
+    0 16px 30px rgba(15,31,80,.26),
+    0 8px 16px rgba(15,31,80,.18);
+}
+
+/* active */
+.btn.ok:active{
+  transform: translateY(0);
+  background: linear-gradient(180deg, #173688 0%, #0d2a66 100%);
+  box-shadow:
+    inset 0 2px 6px rgba(15,23,42,.12),
+    0 6px 14px rgba(15,31,80,.18),
+    0 3px 8px rgba(15,31,80,.14);
+}
+
+/* i kada je disabled neka ostane belo (smanjena opačnost) */
+.btn.ok:disabled,
+.btn.ok[disabled]{ color:#ffffff; }

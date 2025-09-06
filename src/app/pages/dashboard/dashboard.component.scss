@@ -1,0 +1,210 @@
+/* ===== dashboard.component.scss — MedVault (HARD refresh of visuals) ===== */
+/* Sve je samostalno u ovom fajlu i ne oslanja se na drugih .scss. */
+
+:host{
+  /* Paleta i tokeni (isti duh kao login) */
+  --text: #102a37;
+  --muted: #64748b;
+
+  --mv-bg-base: #eef4ff;
+  --mv-grid-dot: #dbe7ff;
+  --mv-cross: #0f2f6b;
+
+  --mv-btn-start: #1a3a94;
+  --mv-btn-end: #0f2f6b;
+
+  --ok-start: #1e8b4c;
+  --ok-end: #156b3a;
+
+  --ow-3: #ffffff;
+  --blue-100: #eaf3ff;
+  --ring-blue: rgba(59,130,246,.22);
+  --border: rgba(15,23,42,.10);
+
+  --shadow-1: 0 8px 24px rgba(15,23,42,.06), 0 2px 8px rgba(15,23,42,.04);
+  --shadow-2: 0 16px 40px rgba(15,23,42,.08), 0 4px 14px rgba(15,23,42,.06);
+
+  --radius-lg: 20px;
+  --radius-md: 14px;
+
+  --space-1:.5rem; --space-2:.75rem; --space-3:1rem; --space-4:1.25rem; --space-5:1.75rem; --space-6:2.25rem;
+
+  --focus-w: 4px;
+  color: var(--text);
+}
+
+/* Canvas pozadina (tačkice + krstići), POGLEDAJ: odmah se vidi razlika */
+:host{ display:block; min-height:100vh; background: var(--mv-bg-base); }
+:host::before{
+  content:"";
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-color: var(--mv-bg-base);
+  background-image:
+    url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'>\
+<rect width='44' height='44' fill='none'/>\
+<circle cx='22' cy='22' r='1.2' fill='%23dbe7ff'/>\
+</svg>");
+  background-size: 44px 44px; background-repeat: repeat; opacity:.8;
+}
+:host::after{
+  content:"";
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-repeat: no-repeat,no-repeat,no-repeat,no-repeat;
+  background-size: 220px 220px, 180px 180px, 240px 240px, 200px 200px;
+  background-position:
+    left -32px top -24px,
+    right -24px top 18%,
+    left 8% bottom -36px,
+    right -18px bottom -28px;
+  background-image:
+    url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'>\
+<path d='M50 0h20v50h50v20H70v50H50V70H0V50h50z' fill='%230f2f6b' fill-opacity='.18'/>\
+</svg>"),
+    url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'>\
+<path d='M50 0h20v50h50v20H70v50H50V70H0V50h50z' fill='%230f2f6b' fill-opacity='.14'/>\
+</svg>"),
+    url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'>\
+<path d='M50 0h20v50h50v20H70v50H50V70H0V50h50z' fill='%230f2f6b' fill-opacity='.16'/>\
+</svg>"),
+    url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'>\
+<path d='M50 0h20v50h50v20H70v50H50V70H0V50h50z' fill='%230f2f6b' fill-opacity='.15'/>\
+</svg>");
+}
+
+/* GRID — respektuje tvoj inline grid-template-columns, dodajemo spacing i širinu */
+.grid{
+  position: relative; z-index: 1;
+  width: min(1100px, 94vw);
+  margin-inline: auto;
+  padding: clamp(1rem, 1rem + 2vw, 2.25rem);
+  display: grid;
+  gap: var(--space-5);
+  align-content: start;
+}
+
+/* KARTICE — staklasti efekat i jaka senka (vidljiva promena) */
+.grid > .card{
+  background: linear-gradient(180deg, var(--ow-3), #fbfdff);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+  padding: clamp(1rem, .9rem + 1.2vw, 1.6rem);
+  display: grid;
+  gap: var(--space-3);
+  isolation: isolate;
+  background-clip: padding-box;
+  animation: cardIn .44s ease-out both;
+}
+.grid > .card::after{
+  content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.75);
+}
+
+/* Naslovi i tekst */
+.grid > .card h3{
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: .2px;
+  font-size: clamp(1.15rem, 1rem + .5vw, 1.4rem);
+  color: #163248;
+}
+.grid > .card p{ margin:0; color:#1d344b; line-height:1.6; }
+.muted{ color:#5f6f80; }
+
+/* Red sa akcijama */
+.row{ display:flex; flex-wrap:wrap; gap: var(--space-2); align-items:center; }
+.mt{ margin-top: var(--space-3); }
+
+/* LINKOVI kao dugmad (anchor + button) — OGROMNA vizuelna razlika */
+a.btn, button.btn{ text-decoration:none; color:inherit; }
+
+/* Baza dugmeta */
+.btn{
+  appearance:none;
+  border-radius: var(--radius-md);
+  padding: 0 16px;
+  height: 46px;
+  display:inline-flex; align-items:center; justify-content:center;
+  font-weight: 700; letter-spacing:.15px;
+  border:1px solid rgba(15,23,42,.10);
+  box-shadow: var(--shadow-1);
+  transition: transform .06s ease, box-shadow .2s ease, background .2s ease, color .2s ease, opacity .2s ease, outline-color .2s ease;
+  cursor:pointer; user-select:none; white-space:nowrap;
+}
+
+/* Primary – duboka plava kao na loginu */
+.btn.pri{
+  color:#fff;
+  background: linear-gradient(180deg, var(--mv-btn-start) 0%, var(--mv-btn-end) 100%);
+  border-color: rgba(10,25,61,.28);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.9) inset,
+    0 10px 22px rgba(15,31,80,.20),
+    0 3px 8px rgba(15,31,80,.14);
+}
+.btn.pri:hover{
+  transform: translateY(-1px);
+  background: linear-gradient(180deg, #2344a6 0%, #123276 100%);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.95) inset,
+    0 16px 30px rgba(15,31,80,.26),
+    0 8px 16px rgba(15,31,80,.18);
+}
+.btn.pri:active{ transform: translateY(0); background: linear-gradient(180deg, #173688 0%, #0d2a66 100%); }
+
+/* OK – zelena (za New Patient) */
+.btn.ok{
+  color:#fff;
+  background: linear-gradient(180deg, var(--ok-start) 0%, var(--ok-end) 100%);
+  border-color: rgba(8,46,24,.28);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.9) inset,
+    0 10px 22px rgba(13,78,41,.18),
+    0 3px 8px rgba(13,78,41,.14);
+}
+.btn.ok:hover{
+  transform: translateY(-1px);
+  background: linear-gradient(180deg, #219b55 0%, #145f35 100%);
+}
+
+/* Sekundarno (obično .btn bez klase) */
+.btn:not(.pri):not(.ok){
+  color:#0f2640;
+  background: linear-gradient(180deg, var(--blue-100) 0%, #f6fbff 100%);
+}
+.btn:focus-visible{
+  outline: var(--focus-w) solid rgba(59,130,246,.30);
+  outline-offset: 2px;
+}
+.btn:disabled, .btn[disabled]{ opacity:.65; cursor:not-allowed; transform:none; box-shadow:none; }
+
+/* Role label */
+small.muted{ font-size:.92rem; }
+
+/* Responsivnost */
+@media (max-width: 720px){
+  .grid{ padding: var(--space-4); }
+  .btn{ height: 44px; }
+  /* Ako želiš 1 kolonu na mobilu uprkos inline style-u, uključi sledeći red: */
+  /* .grid{ grid-template-columns: 1fr !important; } */
+}
+
+/* Motion + accessibility */
+@media (prefers-reduced-motion: reduce){
+  .btn{ transition:none; }
+  .grid > .card{ animation:none; }
+}
+@media (prefers-contrast: more){
+  .btn{ border-color: rgba(15,23,42,.22); }
+}
+
+/* Keyframes */
+@keyframes cardIn{
+  0%{ transform: translateY(8px); opacity:0; }
+  100%{ transform: translateY(0); opacity:1; }
+}
