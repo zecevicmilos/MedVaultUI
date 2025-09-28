@@ -1,19 +1,16 @@
 <div class="card">
-  <h3>New Patient</h3>
+  <h3>Novi pacijent</h3>
 
   <form [formGroup]="form" (ngSubmit)="submit()" class="grid" style="grid-template-columns:1fr 1fr;" novalidate>
-    <div>
-      <div class="label">Medical Record Number</div>
-      <input class="input" formControlName="medicalRecordNumber" />
-    </div>
+ 
 
     <div>
-      <div class="label">First Name</div>
+      <div class="label">Ime</div>
       <input class="input" formControlName="firstName" />
     </div>
 
     <div>
-      <div class="label">Last Name</div>
+      <div class="label">Prezime</div>
       <input class="input" formControlName="lastName" />
     </div>
 
@@ -35,22 +32,26 @@
     </div>
 
     <div>
-      <div class="label">Email</div>
+      <div class="label">E-mail</div>
       <input class="input" type="email" formControlName="email" />
     </div>
 
     <div>
-      <div class="label">Phone</div>
+      <div class="label">Broj telefona</div>
       <input class="input" formControlName="phone" />
     </div>
 
     <div>
-      <div class="label">Address</div>
+      <div class="label">Adresa</div>
       <input class="input" formControlName="address" />
+    </div>
+       <div>
+      <div class="label">Broj zdravstvenog kartona</div>
+      <input class="input" formControlName="medicalRecordNumber" />
     </div>
 
     <div style="grid-column:1/-1" class="mt">
-      <button class="btn ok" type="submit" [disabled]="form.invalid || loading">Create</button>
+      <button class="btn ok" type="submit" [disabled]="form.invalid || loading">Sačuvaj</button>
     </div>
   </form>
 </div>
