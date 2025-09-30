@@ -1,15 +1,15 @@
 <div class="card">
-    <h3>Patients</h3>
+    <h3>Pacijenti</h3>
     <div class="row mt">
-        <input class="input" [(ngModel)]="lastName" placeholder="Last name" />
-        <input class="input" [(ngModel)]="jmbg" placeholder="JMBG" />
-        <button class="btn ok" (click)="search()" [disabled]="loading">Search</button>
+        <input class="input" [(ngModel)]="lastName" placeholder="Unesite prezime" />
+        <input class="input" [(ngModel)]="jmbg" placeholder="Unesite JMBG (13 cifara)" />
+        <button class="btn ok" (click)="search()" [disabled]="loading">Pretraži</button>
     </div>
     <table class="table mt" *ngIf="items.length">
         <thead>
             <tr>
-                <th>MRN</th>
-                <th>Created</th>
+                <th>Broj medicinskog kartona</th>
+                <th>Kreirano</th>
                 <th></th>
             </tr>
         </thead>
@@ -17,9 +17,9 @@
             <tr *ngFor="let p of items">
                 <td>{{p.medicalRecordNumber}}</td>
                 <td>{{p.createdAt | date:'short'}}</td>
-                <td><button class="btn pri" (click)="open(p.id)">Open</button></td>
+                <td><button class="btn pri" (click)="open(p.id)">Otvori</button></td>
             </tr>
         </tbody>
     </table>
-    <p *ngIf="!items.length" class="mt"><small class="muted">No results yet. Try searching.</small></p>
+    <p *ngIf="!items.length" class="mt"><small class="muted">Još nema rezultata. Pokušajte pretragu.</small></p>
 </div>

@@ -10,8 +10,8 @@ import { RouterModule } from '@angular/router';
 
 @Component({
      selector: 'app-patients', templateUrl: './patients.component.html',
-      styleUrls: ['./patients.component.scss'],
-      imports: [FormsModule, DatePipe, RouterModule]
+     styleUrls: ['./patients.component.scss'],
+     imports: [FormsModule, DatePipe, RouterModule, CommonModule]
 })
 export class PatientsComponent {
      lastName = ''; jmbg = ''; items: PatientSummary[] = []; loading = false;

@@ -38,6 +38,14 @@ export class PatientCreateComponent {
     get f() { return this.form.controls; }
 
 submit() {
+
+  
+  // anywhere in Angular (or DevTools console)
+const t = localStorage.getItem('jwt');
+const p = t ? JSON.parse(atob(t.split('.')[1])) : null;
+console.log({ iss: p?.iss, aud: p?.aud, exp: p?.exp, role: p?.role || p?.['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] });
+
+
     this.form.markAllAsTouched();
     if (this.form.invalid) {
       this.toast.show('Please fix highlighted fields.', 'err');

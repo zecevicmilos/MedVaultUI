@@ -1,15 +1,15 @@
 <div class="login">
     <div class="card">
         <h1>MedVault</h1>
-        <p class="muted">Secure Medical Records</p>
+        <p class="muted">Bezbedni medicinski zapisi</p>
         <div class="mt">
-            <div class="label">Username</div>
-            <input class="input" [(ngModel)]="userName" placeholder="username" />
+            <div class="label">Korisničko ime</div>
+            <input class="input" [(ngModel)]="userName" placeholder="korisničko ime" />
         </div>
         <div class="mt">
-            <div class="label">Password</div>
-            <input class="input" type="password" [(ngModel)]="password" placeholder="password" />
+            <div class="label">Lozinka</div>
+            <input class="input" type="password" [(ngModel)]="password" placeholder="lozinka" />
         </div>
-        <button class="btn pri mt" (click)="submit()" [disabled]="loading">Login</button>
+        <button class="btn pri mt" (click)="submit()" [disabled]="loading">Prijava</button>
     </div>
 </div>

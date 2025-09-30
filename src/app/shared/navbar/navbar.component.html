@@ -1,19 +1,20 @@
 <nav class="nav">
-<div class="left" (click)="auth.isAuthenticated && router.navigate(['/'])" style="cursor:pointer">
-<span class="logo">🩺</span>
-<strong>MedVault</strong>
-</div>
-<div class="right" *ngIf="auth.isAuthenticated; else guest">
-<a routerLink="/patients">Patients</a>
-<a routerLink="/patients/create" *ngIf="auth.role==='Admin'">New Patient</a>
-<a routerLink="/audit" *ngIf="auth.role==='Admin'">Audit</a>
-<span class="badge" *ngIf="auth.role">{{auth.role}}</span>
-<button class="btn" (click)="logout()">Logout</button>
-</div>
-<ng-template #guest>
-<a routerLink="/login">Login</a>
-</ng-template>
+    <div class="left" (click)="auth.isAuthenticated && router.navigate(['/'])" style="cursor:pointer">
+        <span class="logo">🩺</span>
+        <strong>MedVault</strong>
+    </div>
+    <div class="right" *ngIf="auth.isAuthenticated; else guest">
+        <a routerLink="/patients">Pacijenti</a>
+        <a routerLink="/patients/create" *ngIf="auth.role==='Admin'">Novi pacijent</a>
+        <a routerLink="/audit" *ngIf="auth.role==='Admin'">Revizija</a>
+        <span class="badge" *ngIf="auth.role">{{auth.role}}</span>
+        <button class="btn" (click)="logout()">Odjava</button>
+    </div>
+    <ng-template #guest>
+        <a routerLink="/login">Prijava</a>
+    </ng-template>
 </nav>
 <div class="toasts" *ngIf="toast.items.length">
-<div *ngFor="let t of toast.items" class="toast" [class.ok]="t.kind==='ok'" [class.err]="t.kind==='err'" [class.warn]="t.kind==='warn'">{{t.msg}}</div>
+    <div *ngFor="let t of toast.items" class="toast" [class.ok]="t.kind==='ok'" [class.err]="t.kind==='err'"
+        [class.warn]="t.kind==='warn'">{{t.msg}}</div>
 </div>

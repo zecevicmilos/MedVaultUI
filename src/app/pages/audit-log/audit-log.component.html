@@ -1,14 +1,14 @@
 <div class="card">
-    <h3>Audit Log</h3>
+    <h3>Dnevnik revizije</h3>
     <table class="table mt" *ngIf="items.length">
         <thead>
             <tr>
-                <th>Time</th>
-                <th>User</th>
-                <th>Action</th>
-                <th>Entity</th>
-                <th>Success</th>
-                <th>Details</th>
+                <th>Vreme</th>
+                <th>Korisnik</th>
+                <th>Radnja</th>
+                <th>Entitet</th>
+                <th>Uspeh</th>
+                <th>Detalji</th>
             </tr>
         </thead>
         <tbody>
@@ -22,5 +22,5 @@
             </tr>
         </tbody>
     </table>
-    <p *ngIf="!items.length"><small class="muted">No audit entries.</small></p>
+    <p *ngIf="!items.length"><small class="muted">Nema revizijskih zapisa.</small></p>
 </div>
