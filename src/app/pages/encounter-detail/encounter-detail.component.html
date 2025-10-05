@@ -1,0 +1,25 @@
+<div class="card" *ngIf="data">
+  <h2 class="title">Pregled</h2>
+  <div class="meta">
+    <div class="pill" [ngClass]="{'pill-s': data.status==='Scheduled', 'pill-c': data.status==='Completed', 'pill-x': data.status==='Canceled'}">
+      {{data.status}}
+    </div>
+    <div><strong>Pacijent:</strong> {{data.patientName}}</div>
+    <div><strong>Broj kartona:</strong> {{data.medicalRecordNumber}}</div>
+    <div><strong>Termin:</strong> {{data.encounterDate | date:'fullDate'}} {{data.encounterDate | date:'shortTime'}}</div>
+    <div *ngIf="data.reason"><strong>Razlog:</strong> {{data.reason}}</div>
+  </div>
+
+  <div *ngIf="data.status==='Scheduled'" class="mt">
+    <div class="label">Napomena (opciono)</div>
+    <textarea class="input" rows="4" [(ngModel)]="notes" placeholder="Kratka napomena…"></textarea>
+    <div class="row mt">
+      <button class="btn ok" (click)="complete()">Označi kao realizovan</button>
+      <button class="btn warn" (click)="cancel()">Otkaži</button>
+    </div>
+  </div>
+
+  <div *ngIf="data.status!=='Scheduled'" class="mt">
+    <small class="muted">Ovaj pregled je {{data.status==='Completed' ? 'realizovan' : 'otkazan'}}.</small>
+  </div>
+</div>

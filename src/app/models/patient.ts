@@ -1,6 +1,8 @@
 export interface PatientSummary { 
     id: string; 
     medicalRecordNumber: string; 
+      firstName: string;          // << dodato
+  lastName: string;           // << dodato
     createdAt: string; 
     departmentId?: string; }
 export interface PatientView { 

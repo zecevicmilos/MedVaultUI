@@ -1,64 +1,121 @@
-/* dashboard.component.scss */
+
 :host { display:block; padding:24px 16px; }
 
-/* Grid: dve simetrične kolone, centrirano, bez prelivanja */
-.grid{
-  max-width: 1440px;           /* po potrebi 1280/1320 */
+/* Centrirani kontejner da se i kartice i tabela poravnaju po istoj širini */
+.dash-container{
+  max-width: 1100px;
   margin: 0 auto;
+}
+
+/* ===== GORE: HERO KARTICE JEDNA PORED DRUGE ===== */
+.hero-cards{
   display: grid;
-  grid-template-columns: repeat(2, minmax(540px, 1fr));
+  grid-template-columns: 1fr 1fr; /* uvek dve kolone dok ne pukne breakpoint */
   gap: 24px;
-  align-items: stretch;         /* iste visine panela */
+  align-items: start; /* gore poravnato */
+  margin-bottom: 14px;
 }
 
-@media (max-width: 1120px){
-  .grid{ grid-template-columns: 1fr; }
+@media (max-width: 980px){
+  .hero-cards{ grid-template-columns: 1fr; }
 }
 
-/* LOKALNA kartica samo za dashboard */
+/* Lokalna kartica (ne dira globalni .card) */
 .dash-card{
-  min-width: 0;                 /* sadržaj ne širi kolonu */
-  width: 100%;
-  height: 120%;
-  background: #fff;
+  background: var(--card, #fff);
   border: 1px solid #e5e7eb;
   border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0,0,0,.06);
-  padding: 24px;
+  box-shadow: var(--shadow, 0 10px 30px rgba(15,23,42,.08));
+  padding: 22px 24px;
+  min-height: 210px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-
 .dash-card h3{
-  margin: 0 0 16px;
+  margin: 0 0 14px;
   text-align: center;
   font-weight: 800;
   font-size: 22px;
   color: #163248;
 }
-
 .dash-card p{ margin:0; line-height:1.6; color:#23364a; }
 .muted{ color:#6b7280; }
 
-/* Dugmad: jedna linija na desktopu, dovoljno široka */
 .actions{
   display:flex; justify-content:center; align-items:center;
-  gap: 12px; flex-wrap: nowrap; margin: 8px 0 12px;
+  gap: 12px; flex-wrap: wrap; margin: 6px 0 12px;
 }
-.actions .btn{ min-width: 120px; height: 46px; padding: 0 18px; }
+.actions .btn{ min-width: 128px; height: 44px; padding: 0 18px; }
 
-@media (max-width: 1120px){
-  .actions{ flex-wrap: wrap; justify-content:flex-start; }
-  .actions .btn{ min-width: 0; }
-}
-
-/* Lokalno forsiraj zeleno za "Novi pacijent" (ne dira globalno) */
+/* Lokalno pojačaj OK dugme */
 .dash-card .btn.ok{
   background: linear-gradient(180deg, #1e8b4c 0%, #156b3a 100%);
-  border: 1px solid #156b3a;
-  color:#fff;
+  border: 1px solid #156b3a; color:#fff;
 }
 .dash-card .btn.ok:hover{
   background: linear-gradient(180deg, #219b55 0%, #145f35 100%);
+}
+
+/* ===== ISPOD: TABELA NAREDNI TERMINI ===== */
+.upcoming{ margin-top: 8px; }
+.upcoming__header{
+  display:flex; align-items:center; justify-content:space-between;
+  margin: 12px 0 8px;
+}
+.upcoming h3{ margin:0; font-size:20px; font-weight:800; color:#163248; }
+.link{ font-size:14px; text-decoration:underline; cursor:pointer; }
+
+/* Loading skeleton */
+.skeleton-wrap{ display:grid; gap:10px; }
+.skeleton{
+  height: 52px; border-radius: 12px;
+  background: linear-gradient(90deg,#eee 25%,#f5f5f5 37%,#eee 63%);
+  background-size:400% 100%; animation: shimmer 1.2s infinite;
+}
+@keyframes shimmer{ 0%{background-position:100% 0} 100%{background-position:-100% 0} }
+
+/* Omotač tabele: čisto, nije kartica ali ima border i senku */
+.tbl-wrap{
+  overflow-x: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(0,0,0,.04);
+}
+
+/* Tabela */
+.tbl{
+  width: 100%;
+  min-width: 720px;             /* čitljive kolone; na malom ekranu skrol */
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 15px;
+}
+.tbl thead th{
+  text-align: left;
+  font-weight: 700;
+  padding: 12px 14px;
+  background: #f8fafc;
+  color: var(--fg, #0f172a);
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky; top: 0; z-index: 1; /* lepljiv header */
+}
+.tbl tbody td{
+  padding: 12px 14px;
+  border-bottom: 1px solid #eef2f7;
+  vertical-align: middle;
+}
+.tbl tbody tr:hover{ background: #f9fbff; }
+
+.tbl .time{ font-weight: 600; white-space: nowrap; }
+.tbl .who{ font-weight: 500; }
+.tbl .why{ color:#374151; opacity:.9; }
+.actions-td{ text-align: right; }
+
+.btn.tiny{ height: 34px; padding: 0 12px; font-size: 14px; }
+
+/* Još kompaktnije za najmanje ekrane */
+@media (max-width: 640px){
+  .tbl{ min-width: 620px; }
 }

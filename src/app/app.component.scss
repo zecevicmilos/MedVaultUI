@@ -23,3 +23,10 @@ small.muted{color:var(--muted)}
 .tab{padding:8px 12px;border-radius:10px;background:#eef;cursor:pointer}
 .tab.active{background:var(--pri);color:#fff}
 .mt{margin-top:12px}
+
+.badge-s{ background:#dbeafe; color:#1e3a8a; padding:2px 8px; border-radius:999px; }
+.badge-c{ background:#dcfce7; color:#166534; padding:2px 8px; border-radius:999px; }
+.badge-x{ background:#fee2e2; color:#991b1b; padding:2px 8px; border-radius:999px; }
+.table { width:100%; border-collapse: collapse; }
+.table th, .table td { padding:8px 10px; border-bottom:1px solid #eee; }
+textarea.input { resize: vertical; }

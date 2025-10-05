@@ -8,7 +8,7 @@ import { PatientDetailComponent } from './pages/patient-detail/patient-detail.co
 import { AuditLogComponent } from './pages/audit-log/audit-log.component';
 import { AuthGuard } from './core/auth.guard';
 import { RoleGuard } from './core/role.guard';
-
+import { EncounterDetailComponent } from './pages/encounter-detail/encounter-detail.component';
 
 const routes: Routes = [
 { path: 'login', component: LoginComponent },
@@ -17,6 +17,7 @@ const routes: Routes = [
 { path: 'patients/create', component: PatientCreateComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['Admin'] } },
 { path: 'patients/:id', component: PatientDetailComponent, canActivate: [AuthGuard] },
 { path: 'audit', component: AuditLogComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['Admin'] } },
+ { path: 'encounters/:id', component: EncounterDetailComponent },
 { path: '**', redirectTo: '' }
 ];
 

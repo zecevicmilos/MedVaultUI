@@ -15,5 +15,11 @@ export class AuditLogComponent implements OnInit {
 
   constructor(private api: AuditService) { }
 
-  ngOnInit() { this.loading = true; this.api.recent().subscribe({ next: x => { this.items = x; this.loading = false; }, error: _ => this.loading = false }); }
+  ngOnInit() {
+    this.loading = true; this.api.recent()
+      .subscribe({
+        next: x => { this.items = x; this.loading = false; },
+        error: _ => this.loading = false
+      });
+  }
 }

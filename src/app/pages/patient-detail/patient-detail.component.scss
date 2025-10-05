@@ -1,0 +1,254 @@
+/* ===== Kolona sa akcijama ===== */
+.col-actions {
+    width: 320px;
+}
+
+/* dve akcije uvek u istom redu, jednake širine */
+.row-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* i u inline kartici */
+.inline-complete-actions {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    /* Sačuvaj + Odustani */
+    gap: 12px;
+    margin-top: 8px;
+}
+
+/* ===== Kompaktna dugmad – lokalne klase (prebijaju globalne) ===== */
+$h: 44px;
+$radius: 12px;
+$shadow: 0 8px 18px rgba(15, 23, 42, .12);
+
+.btn-blue-compact,
+.btn-red-compact {
+    /* tvrdo pregazimo globalne .btn stilove */
+    height: $h !important;
+    width: auto !important;
+    /* ili 100% !important; oboje radi */
+    min-width: 0 !important;
+    padding: 0 6px !important;
+    border-radius: $radius !important;
+    border: 1px solid rgba(15, 23, 42, .1) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    box-shadow: $shadow !important;
+    cursor: pointer;
+    transition: transform .06s ease, box-shadow .2s ease, filter .2s ease;
+    appearance: none;
+}
+
+/* Plava (Realizovano / Sačuvaj) */
+.btn-blue-compact {
+    color: #fff !important;
+    background: linear-gradient(180deg, #21429a 0%, #0f2f6b 100%) !important;
+    border-color: rgba(10, 25, 61, .28) !important;
+}
+
+.btn-blue-compact:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px rgba(15, 31, 80, .22) !important;
+}
+
+.btn-blue-compact:active {
+    transform: translateY(0);
+}
+
+.btn-blue-compact:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Crvena (Otkaži) */
+.btn-red-compact {
+    color: #fff !important;
+    background: linear-gradient(180deg, #e34a4a 0%, #c92e2e 100%) !important;
+    border-color: rgba(190, 30, 30, .35) !important;
+}
+
+.btn-red-compact:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px rgba(190, 30, 30, .24) !important;
+}
+
+.btn-red-compact:active {
+    transform: translateY(0);
+}
+
+.btn-red-compact:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+    .col-actions {
+        width: 100%;
+    }
+}
+
+
+
+/* Dugmad: po 50%, bez margina! — OVO je ključ */
+.col-actions .row-actions>.btn-blue-compact,
+.col-actions .row-actions>.btn-red-compact {
+    flex: 1 1 0 !important;
+    /* pola-pola */
+    min-width: 0 !important;
+    margin: 0 !important;
+    /* reset globalnog .btn margina */
+}
+
+/* (ostaje tvoje) kompakt dugme – bez fiksne širine */
+.btn-blue-compact,
+.btn-red-compact {
+    width: auto !important;
+    /* nikako 50% */
+    min-width: 0 !important;
+    /* … ostali tvoji stilovi … */
+}
+
+/* === Akciona kolona === */
+.col-actions {
+    width: 320px;
+}
+
+/* DVE AKCIJE U ISTOM REDU */
+.col-actions .row-actions {
+    display: grid;
+    /* samo grid (bez flex-a) */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    /* 50/50 i dozvoli skupljanje */
+    gap: 12px;
+    align-items: stretch;
+}
+
+/* Dugmad popunjavaju svoje ćelije i smeju da se suze */
+.col-actions .row-actions>.btn-blue-compact,
+.col-actions .row-actions>.btn-red-compact {
+    width: 100% !important;
+    /* PREGAZI prethodno width:auto */
+    min-width: 0 !important;
+    /* dozvoli skupljanje u gridu */
+    margin: 0 !important;
+    /* ako globalna .btn ima margin */
+}
+
+/* (zadrži svoje stilove boja/visine itd. ali bez ponovnog width:auto) */
+.btn-blue-compact,
+.btn-red-compact {
+    height: 44px !important;
+    border-radius: 12px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    /* … ostalo iz tvojih stilova … */
+}
+/* centriranje sadržaja u “read-only” kutijama */
+.read-centered{
+  display: flex;
+  align-items: center;     /* vertikalno centriranje */
+  justify-content: left; /* i horizontalno; ukloni ako želiš da ostane levo */
+  text-align: left;
+  min-height: 56px;        /* uskladi s visinom tvojih .input polja */
+  padding: 0 16px;         /* malo “vazduha” levo/desno */
+}
+/* Blago istaknuto dugme za preuzimanje */
+.btn-download{
+  height: $h !important;                 /* koristi tvoj $h=44px */
+  padding: 0 16px !important;
+  border-radius: $radius !important;     /* koristi tvoj $radius */
+  font-weight: 700 !important;
+  color: #0f2f6b !important;             /* tamno plava */
+  background: linear-gradient(180deg,#f3f7ff 0%,#e9f1ff 100%) !important; /* blaga plava */
+  border: 1px solid rgba(33,66,154,.18) !important;
+  box-shadow: 0 8px 18px rgba(15,23,42,.08) !important;
+  transition: transform .06s ease, box-shadow .2s ease, filter .2s ease;
+}
+.btn-download:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(15,23,42,.12) !important;
+  background: linear-gradient(180deg,#eef4ff 0%,#e3ecff 100%) !important;
+}
+.btn-download:active{ transform: translateY(0); }
+.btn-download:focus-visible{ outline: 2px solid rgba(33,66,154,.35); outline-offset: 2px; }
+.btn-download:disabled{
+  opacity: .6; cursor: not-allowed; transform: none; box-shadow: none;
+}
+
+.table td.col-actions,
+.table th.col-actions{
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: nowrap !important;
+}
+.btn-ghost-danger{
+  height: $h !important;
+  padding: 0 16px !important;
+  border-radius: $radius !important;
+  font-weight: 700 !important;
+  background: linear-gradient(180deg,#f3f7ff 0%,#e9f1ff 100%) !important; /* isto kao .btn-download */
+  border: 1px solid rgba(233,83,83,.25) !important;
+  color: #c92e2e !important;
+  box-shadow: 0 8px 18px rgba(15,23,42,.08) !important;
+  transition: transform .06s ease, box-shadow .2s ease, filter .2s ease;
+}
+.btn-ghost-danger:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(15,23,42,.12) !important;
+}
+
+/* jednaka širina dugmadi u akcionoj koloni */
+.col-actions .row-actions > .btn-ghost-danger,
+.col-actions .row-actions > .btn-download{
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+
+/* --- Stilirani file input ("Izaberi fajl") --- */
+.file-wrap{
+  display: inline-flex;
+  align-items: center;
+  gap: .75rem;
+}
+.file-input{           /* sakrij native "Choose file" */
+  position: absolute;
+  left: -9999px;
+}
+.file-label{
+  height: $h !important;
+  padding: 0 16px !important;
+  border-radius: $radius !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  background: linear-gradient(180deg,#f3f7ff 0%,#e9f1ff 100%);
+  border: 1px solid rgba(33,66,154,.18);
+  box-shadow: 0 8px 18px rgba(15,23,42,.08);
+  cursor: pointer;
+}
+.file-label:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(15,23,42,.12);
+}
+.file-name{
+  color: #334155;
+  max-width: 42ch;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

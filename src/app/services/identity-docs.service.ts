@@ -1,24 +1,39 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { IdentityDocRow } from '../models/identity-doc';
-
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class IdentityDocsService {
-private base = environment.apiBase;
-constructor(private http: HttpClient) {}
+//   delete(id: string) {
+//     throw new Error('Method not implemented.');
+//   }
+  private base = environment.apiBase;
+  constructor(private http: HttpClient) {}
 
-
-list(patientId: string){ return this.http.get<IdentityDocRow[]>(`${this.base}/identitydocuments/${patientId}`); }
-upload(patientId: string, body: { docType: string; docNumber: string; issueDateIso?: string; expiryDateIso?: string; file?: File | null; }){
-const form = new FormData();
-form.append('docType', body.docType);
-form.append('docNumber', body.docNumber);
-if (body.issueDateIso) form.append('issueDateIso', body.issueDateIso);
-if (body.expiryDateIso) form.append('expiryDateIso', body.expiryDateIso);
-if (body.file) form.append('scan', body.file);
-return this.http.post<{ id: string }>(`${this.base}/identitydocuments/${patientId}`, form);
+  list(patientId: string){
+    return this.http.get<IdentityDocRow[]>(`${this.base}/identitydocuments/${patientId}`);
+  }
+delete(id: string): Observable<void> {
+  return this.http.delete<void>(`${this.base}/${id}`);
 }
-download(id: string){ return this.http.get(`${this.base}/identitydocuments/download/${id}`, { responseType:'blob' }); }
+  upload(patientId: string, body: {
+    docName: string; issueDateIso?: string; expiryDateIso?: string; file: File;
+  }){
+    const form = new FormData();
+    form.append('docName', body.docName);
+    if (body.issueDateIso) form.append('issueDateIso', body.issueDateIso);
+    if (body.expiryDateIso) form.append('expiryDateIso', body.expiryDateIso);
+    form.append('scan', body.file); // obavezno
+    return this.http.post<{ id: string }>(`${this.base}/identitydocuments/${patientId}`, form);
+  }
+
+  download(id: string): Observable<HttpResponse<Blob>> {
+    return this.http.get(`${this.base}/identitydocuments/download/${id}`, {
+      responseType: 'blob', observe: 'response'
+    });
+  }
+
+  
 }

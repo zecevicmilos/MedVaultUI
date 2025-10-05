@@ -1,114 +1,168 @@
 <div class="card" *ngIf="info">
-    <h3>{{info.firstName}} {{info.lastName}} <small class="badge">Broj medicinskog kartona: {{info.medicalRecordNumber}}</small></h3>
-    <small class="muted">Kreirano: {{info.createdAt | date:'short'}}</small>
-
-
-    <div class="tabs mt">
-        <div class="tab" [class.active]="tab==='ov'" (click)="tab='ov'">Pregled</div>
+  <h3> {{info.firstName}} {{info.lastName}} <small class="badge">Broj medicinskog kartona:
+      {{info.medicalRecordNumber}}</small> </h3> <small class="muted">Kreirano: {{info.createdAt |
+    date:'short'}}</small>
+  <div class="tabs mt">
+    <div class="tab" [class.active]="tab==='ov'" (click)="tab='ov'">Osnovno</div>
+    <div class="tab" [class.active]="tab==='id'" (click)="tab='id'">Lični dokumenti</div>
         <div class="tab" [class.active]="tab==='sc'" (click)="tab='sc'">Skenirani dokumenti</div>
-        <div class="tab" [class.active]="tab==='id'" (click)="tab='id'">Lični dokumenti</div>
-        <div class="tab" [class.active]="tab==='en'" (click)="tab='en'">Posete</div>
-        <div class="tab" [class.active]="tab==='co'" (click)="tab='co'">Saglasnosti</div>
+    <div class="tab" [class.active]="tab==='ap'" (click)="tab='ap'">Pregledi</div>
+  </div>
+  <div *ngIf="tab==='ov'" class="grid" style="grid-template-columns:1fr 1fr">
+    <div>
+      <div class="label">Ime</div>
+      <div class="input read-centered" style="background:#f8fafc">{{info.firstName}}</div>
     </div>
-
-
-    <!-- Overview -->
-    <div *ngIf="tab==='ov'" class="grid" style="grid-template-columns:1fr 1fr">
-        <div>
-            <div class="label">Ime</div>
-            <div class="input" style="background:#f8fafc">{{info.firstName}}</div>
-        </div>
-        <div>
-            <div class="label">Prezime</div>
-            <div class="input" style="background:#f8fafc">{{info.lastName}}</div>
-        </div>
+    <div>
+      <div class="label">Prezime</div>
+      <div class="input read-centered" style="background:#f8fafc">{{info.lastName}}</div>
     </div>
-
-
-    <!-- Scans -->
-    <div *ngIf="tab==='sc'" class="mt">
-        <div class="row">
-            <select class="input" [(ngModel)]="scanType" style="max-width:160px">
-                <option>PDF</option>
-                <option>Rendgen</option>
-                <option>Ultrazvuk</option>
-                <option>CT</option>
-                <option>Slika</option>
-            </select>
-            <input type="file" (change)="onScan($event)" accept="application/pdf,image/*" />
-            <button class="btn pri" (click)="uploadScan()">Otpremi i šifruj</button>
-        </div>
-        <table class="table mt" *ngIf="recs.length">
-            <thead>
-                <tr>
-                    <th>Tip</th>
-                    <th>Naziv</th>
-                    <th>Veličina</th>
-                    <th>Popuna</th>
-                    <th>Datum</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let r of recs">
-                    <td>{{r.recordType}}</td>
-                    <td>{{r.originalFileName}}</td>
-                    <td>{{r.originalLength}}</td>
-                    <td>{{r.paddingLength}}</td>
-                    <td>{{r.createdAt | date:'short'}}</td>
-                    <td>
-                        <button class="btn" (click)="downloadScan(r.id, r.originalFileName)">Preuzmi</button>
-                        <button class="btn err" *ngIf="auth.role==='Admin'" (click)="deleteScan(r.id)">Obriši</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="row" style="margin-bottom:.75rem">
+      <div class="label" style="margin:0">Odeljenje</div>
+      <div class="input read-centered" style="background:#f8fafc; max-width:320px;">
+        {{ deptName || 'N/A' }}
+      </div>
     </div>
+  </div>
+  <!-- Skenirani dokumenti -->
+  <div *ngIf="tab==='sc'" class="mt">
+    <div class="row"> <select class="input" [(ngModel)]="scanType" style="max-width:160px">
+        <option>Rendgen</option>
+        <option>Ultrazvuk</option>
+        <option>CT</option>
+        <option>Slika</option>
+        <option>PDF</option>
+      </select> 
+      <div class="file-wrap">
+  <input #scanInput id="scanInput" type="file"
+         (change)="onScan($event)"
+         accept="application/pdf,image/*"
+         class="file-input" />
+  <label for="scanInput" class="file-label">Izaberi fajl</label>
+  <span class="file-name">{{ scanFile?.name || 'Nije izabran fajl' }}</span>
+</div>
 
-
-    <!-- Identity Docs -->
-    <div *ngIf="tab==='id'" class="mt">
-        <div class="row" *ngIf="auth.role==='Admin'">
-            <input class="input" [(ngModel)]="idDocType" placeholder="Tip" style="max-width:180px" />
-            <input class="input" [(ngModel)]="idDocNumber" placeholder="Broj dokumenta" style="max-width:220px" />
-            <input class="input" type="date" [(ngModel)]="idIssue" placeholder="Datum izdavanja" />
-            <input class="input" type="date" [(ngModel)]="idExpiry" placeholder="Datum isteka" />
-            <input type="file" (change)="onIdFile($event)" accept="application/pdf,image/*" />
-            <button class="btn ok" (click)="saveId()">Sačuvaj</button>
-        </div>
-        <table class="table mt" *ngIf="iddocs.length">
-            <thead>
-                <tr>
-                    <th>Tip</th>
-                    <th>Sken</th>
-                    <th>Datum</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let d of iddocs">
-                    <td>{{d.docType}}</td>
-                    <td>{{d.hasScan ? 'Yes' : 'No'}}</td>
-                    <td>{{d.createdAt | date:'short'}}</td>
-                    <td><button class="btn" (click)="downloadId(d.id)" [disabled]="!d.hasScan">Preuzmi</button></td>
-                </tr>
-            </tbody>
-        </table>
+<button class="btn pri btn-compact" (click)="uploadScan(scanInput)">Sačuvaj</button>
     </div>
+<table class="table mt" *ngIf="recs.length">
+  <thead>
+    <tr>
+      <th>Tip</th>
+      <th>Naziv</th>
+      <th>Datum</th>
+      <th class="col-actions"></th>
+    </tr>
+  </thead>
 
-
-    <!-- Encounters -->
-    <div *ngIf="tab==='en'" class="mt">
-        <div class="row">
-            <input class="input" type="datetime-local" [(ngModel)]="encDate" style="max-width:230px" />
-            <input class="input" [(ngModel)]="encNotes" placeholder="Beleške (opciono)" />
-            <button class="btn ok" (click)="saveEnc()">Dodaj posetu</button>
+  <tbody>
+    <tr *ngFor="let r of recs">
+      <td>{{ r.recordType }}</td>
+      <td>{{ r.originalFileName }}</td>
+      <td>{{ r.createdAt | date:'short' }}</td>
+      <td class="col-actions">
+        <div class="row-actions">
+          <button class="btn btn-download"
+                  (click)="downloadScan(r.id, r.originalFileName)">Preuzmi</button>
+          <button class="btn btn-ghost-danger"
+        *ngIf="auth.role==='Admin'"
+        (click)="deleteScan(r.id)">Obriši</button>
         </div>
-        <table class="table mt" *ngIf="encs.length">
-            <thead>
-                <tr>
-                    <th>Datum</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+    <p *ngIf="!recs.length" class="mt"><small class="muted">Nema dokumenata.</small></p>
+  </div>
+  <div *ngIf="tab==='id'" class="mt">
+    <div class="grid" style="grid-template-columns:1fr 1fr">
+      <div style="grid-column: 1 / -1">
+        <div class="label">Naziv dokumenta</div> <input class="input" [(ngModel)]="docName" name="docName"
+          placeholder="Lična karta, zdravstvena knjižica, pasoš…" />
+      </div>
+      <div>
+        <div class="label">Datum izdavanja</div> <input class="input" type="date" [(ngModel)]="idIssue"
+          name="idIssue" />
+      </div>
+      <div>
+        <div class="label">Datum isteka</div> <input class="input" type="date" [(ngModel)]="idExpiry" name="idExpiry" />
+      </div>
+      <div style="grid-column:1/-1; display:flex; align-items:center; gap:.75rem;"><div class="file-wrap">
+  <input #idInput id="idInput" type="file"
+         (change)="onIdFile($event)"
+         accept=".pdf,.png,.jpg,.jpeg"
+         class="file-input" />
+  <label for="idInput" class="file-label">Izaberi fajl</label>
+  <span class="file-name">{{ idFile?.name || 'Nije izabran fajl' }}</span>
+</div>
+
+<button class="btn pri btn-compact"
+        (click)="saveId(idInput)"
+        [disabled]="!idFile || !docName?.trim()">Sačuvaj</button> </div>
+    </div>
+    <table class="table mt" *ngIf="iddocs.length">
+      <thead>
+        <tr>
+          <th>Naziv</th>
+          <th>Sken</th>
+          <th>Datum unosa</th>
+          <th class="col-actions"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of iddocs">
+          <td>{{ d.docName }}</td>
+          <td>{{ d.hasScan ? 'Yes' : 'No' }}</td>
+          <td>{{ d.createdAt | date:'dd.MM.yyyy' }}</td>
+          <td class="col-actions">
+  <div class="row-actions">
+    <button class="btn btn-download"
+            (click)="downloadId(d.id)"
+            [disabled]="!d.hasScan">Preuzmi</button>
+    <button class="btn btn-ghost-danger"
+            *ngIf="auth.role==='Admin'"
+            (click)="deleteId(d.id)">Obriši</button>
+  </div>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="!iddocs.length" class="mt"><small class="muted">Nema ličnih dokumenata.</small></p>
+  </div> 
+  <div *ngIf="tab==='ap'" class="mt">
+    <div class="row"> <input class="input" type="datetime-local" [(ngModel)]="apStart" style="max-width:230px" /> <input
+        class="input" [(ngModel)]="apReason" placeholder="Razlog (opciono)" /> <button class="btn ok"
+        (click)="createAppt()">Zakaži pregled</button> </div>
+    <table class="table mt" *ngIf="encs.length">
+      <thead>
+        <tr>
+          <th>Datum</th>
+          <th>Status</th>
+          <th>Razlog</th>
+          <th class="col-actions"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of encs">
+          <td>{{ a.encounterDate | date:'short' }}</td>
+          <td> <span class="badge"
+              [ngClass]="{ 'badge-s': a.status==='Scheduled', 'badge-c': a.status==='Completed', 'badge-x': a.status==='Canceled' }">
+              {{ statusLabel(a.status) }} </span> </td>
+          <td>{{ a.reason || '-' }}</td>
+          <td class="col-actions">
+            <div class="row-actions" *ngIf="a.status==='Scheduled'"> <button class="btn-blue-compact"
+                (click)="startComplete(a.id)">Realizovano</button> <button class="btn-red-compact"
+                (click)="cancelAppt(a.id)">Otkaži</button> </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="!encs.length" class="mt"><small class="muted">Nema poseta.</small></p> 
+    <div class="card" *ngIf="completeId">
+      <div class="label">Napomena (opciono)</div> <input class="input" [(ngModel)]="completeNotes"
+        placeholder="Kratka napomena…" />
+      <div class="inline-complete-actions"> <button class="btn ok" style="max-width: min-content;"
+          (click)="saveComplete()">Sačuvaj</button> <button class="btn" (click)="completeId=undefined">Odustani</button>
+      </div>
+    </div>
+  </div>

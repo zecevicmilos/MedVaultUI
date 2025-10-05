@@ -48,6 +48,17 @@
       <div class="label">Broj zdravstvenog kartona</div>
       <input class="input" formControlName="medicalRecordNumber" placeholder="Unesite broj zdravstvenog kartona" />
     </div>
+    
+    <div>
+      <div class="label">Odeljenje</div>
+      <select class="input" formControlName="departmentId">
+        <option value="">— odaberite odeljenje —</option>
+        <option *ngFor="let d of departments" [value]="d.id">{{ d.name }}</option>
+      </select>
+      <small class="muted" *ngIf="f['departmentId']?.touched && f['departmentId']?.invalid">
+        Odeljenje je obavezno.
+      </small>
+    </div>
 
     <div style="grid-column:1/-1" class="mt">
       <button class="btn ok" type="submit" [disabled]="form.invalid || loading">Sačuvaj</button>

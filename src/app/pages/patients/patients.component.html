@@ -6,8 +6,15 @@
         <button class="btn ok" (click)="search()" [disabled]="loading">Pretraži</button>
     </div>
     <table class="table mt" *ngIf="items.length">
+        <colgroup>
+            <col style="width: 40%">
+            <col style="width: 28ch">
+            <col style="width: 22ch">
+            <col style="width: 120px">
+        </colgroup>
         <thead>
             <tr>
+                <th>Ime i prezime</th>
                 <th>Broj medicinskog kartona</th>
                 <th>Kreirano</th>
                 <th></th>
@@ -15,8 +22,10 @@
         </thead>
         <tbody>
             <tr *ngFor="let p of items">
-                <td>{{p.medicalRecordNumber}}</td>
-                <td>{{p.createdAt | date:'short'}}</td>
+                <td>{{ p.firstName }} {{ p.lastName }}</td>
+                <td>{{ p.medicalRecordNumber }}</td>
+         <td>{{ p.createdAt | date:'dd.MM.yyyy. HH:mm':'Europe/Belgrade':'sr-RS' }}</td>
+
                 <td><button class="btn pri" (click)="open(p.id)">Otvori</button></td>
             </tr>
         </tbody>

@@ -19,6 +19,11 @@ import { AuditLogComponent } from './pages/audit-log/audit-log.component';
 
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { AuthInterceptor } from './core/http-interceptor';
+import { EncounterDetailComponent } from './pages/encounter-detail/encounter-detail.component';
+
+
+
+
 
 @NgModule({
 declarations: [
@@ -39,7 +44,10 @@ DashboardComponent,
 PatientsComponent,
 PatientCreateComponent,
 PatientDetailComponent,
-AuditLogComponent
+AuditLogComponent,
+    BrowserModule,
+    AppRoutingModule,   // (re-exports RouterModule)
+    NavbarComponent     // standalone komponenta ide u imports, ne u declarations
     ],
 providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
 bootstrap: [AppComponent]

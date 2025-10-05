@@ -1,5 +1,6 @@
-export interface IdentityDocRow { 
-    id: string; 
-    docType: string;
-    hasScan: boolean; 
-    createdAt: string; }
+export interface IdentityDocRow {
+  id: string;
+  docName: string;       
+  hasScan: boolean;
+  createdAt: string;     
+}

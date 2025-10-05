@@ -1,15 +1,60 @@
-<div class="grid">
-    <div class="dash-card">
-        <h3>Brze akcije</h3>
-        <div class="row actions">
-            <a class="btn pri" routerLink="/patients">Pretraga pacijenata</a>
-            <a class="btn ok" routerLink="/patients/create" *ngIf="auth.role==='Admin'">Novi pacijent</a>
-            <a class="btn" routerLink="/audit" *ngIf="auth.role==='Admin'">Revizija</a>
-        </div>
-        <small class="muted">Uloga: {{ auth.role ? (auth.role==='Admin' ? 'Admin' : auth.role) : 'N/D' }}</small>
+
+<div class="dash-container">
+  <!-- GORE: DVE KARTICE JEDNA PORED DRUGE -->
+  <div class="hero-cards">
+    <section class="dash-card">
+      <h3>Brze akcije</h3>
+      <div class="actions">
+        <a class="btn pri" routerLink="/patients">Pacijenti</a>
+        <a class="btn ok" routerLink="/patients/create" *ngIf="auth.role==='Admin'">Novi pacijent</a>
+      </div>
+      <small class="muted">Uloga: {{auth.role || 'N/A'}}</small>
+    </section>
+
+    <section class="dash-card">
+      <h3>O aplikaciji</h3>
+      <p>MedVault centralizuje kartone, dokumenta i preglede pacijenata uz brzu pretragu, kontrolu pristupa po ulozi/odeljenju i end-to-end AES-GCM šifrovanje sa envelope upravljanjem ključevima.</p>
+    </section>
+  </div>
+
+  <!-- ISPOD KARTICA: TABELA NAREDNI TERMINI -->
+<section class="upcoming" *ngIf="auth.role?.toLowerCase()==='doctor'">
+    <div class="upcoming__header">
+      <h3>Naredni termini</h3>
+      <a class="link" routerLink="/encounters">Vidi sve</a>
     </div>
-    <div class="dash-card">
-        <h3>O aplikaciji</h3>
-        <p>Otpremite i šifrujte skenove, upravljajte identifikacionim dokumentima i beležite preglede.</p>
+
+    <!-- Loading skeleton -->
+    <div *ngIf="loading" class="skeleton-wrap">
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
     </div>
+
+    <!-- Tabela -->
+    <div class="tbl-wrap" *ngIf="!loading && upcoming.length">
+      <table class="tbl" aria-label="Naredni termini">
+        <thead>
+          <tr>
+            <th style="width:220px">Vreme</th>
+            <th>Pacijent</th>
+            <th>Razlog</th>
+            <th style="width:120px"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let a of upcoming">
+            <td class="time">{{ a.encounterDate | date:'EEE d.MM.yyyy, HH:mm' }}</td>
+            <td class="who">{{ a.patientName || a.patientId }}</td>
+            <td class="why">{{ a.reason || '—' }}</td>
+            <td class="actions-td">
+              <button class="btn pri tiny" (click)="openEncounter(a.id)">Otvori</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Empty state -->
+    <p class="muted" *ngIf="!loading && !upcoming.length">Nema zakazanih termina.</p>
+  </section>
 </div>

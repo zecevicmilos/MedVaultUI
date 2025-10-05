@@ -265,3 +265,21 @@ html::after{
 
 /* obezbedi da app sadržaj bude iznad pozadine */
 body > app-root{ position: relative; z-index: 1; }
+/* Kolone poštuju širine i ne guraju karticu preko ivice */
+.table{
+  table-layout: fixed;
+  width: 100%;
+}
+
+/* Spreči curenje sadržaja iz ćelija */
+.table th, .table td{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Dozvoli da se Razlog lomi u više redova (neka on upija širinu) */
+.table th:nth-child(3),
+.table td:nth-child(3){
+  white-space: normal;
+}

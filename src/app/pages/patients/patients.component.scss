@@ -415,3 +415,62 @@
 /* i kada je disabled neka ostane belo (smanjena opačnost) */
 .btn.ok:disabled,
 .btn.ok[disabled]{ color:#ffffff; }
+
+/* Kolona 2 šira i bez prelamanja */
+.table th:nth-child(2),
+.table td:nth-child(2){
+  min-width: 26ch;
+  white-space: nowrap;
+}
+
+/* Kolona 3 (datum) fiksna širina */
+.table th:nth-child(3),
+.table td:nth-child(3){
+  width: 22ch;
+  white-space: nowrap;
+}
+
+/* Kolona 4 (akcije) – fiksna i desno poravnata */
+.table th:nth-child(4),
+.table td:nth-child(4){
+  width: 120px;
+  text-align: right;
+}
+/* 1) Ugasimo globalni ellipsis na svim ćelijama ove tabele */
+.table th,
+.table td{
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+/* 2) Zadnja kolona – malo šira i sa manjim desnim paddingom da dugme stane */
+.table th:nth-child(4),
+.table td:nth-child(4){
+  width: 140px;          /* može i 150px ako želiš više lufta */
+  padding-right: .5rem;  /* umesto 1rem */
+  white-space: nowrap;
+}
+
+/* (opciono) samo dugme nek ne hvata ellipsis ni prelamanje */
+.table td:nth-child(4) .btn{
+  white-space: nowrap;
+}
+/* Kolona 2 šira i bez prelamanja – SADA centrirana */
+.table th:nth-child(2),
+.table td:nth-child(2){
+  min-width: 26ch;
+  white-space: nowrap;
+  text-align: center;           /* <— novo */
+  font-variant-numeric: tabular-nums; /* uredno poravnanje cifara */
+}
+/* Kolona 2 — Broj medicinskog kartona */
+.table thead th:nth-child(2){           /* naslov kolone */
+  text-align: center;
+}
+
+.table tbody td:nth-child(2){           /* vrednosti u koloni */
+  min-width: 26ch;
+  white-space: nowrap;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
