@@ -11,8 +11,8 @@
   </div>
 
   <div *ngIf="data.status==='Scheduled'" class="mt">
-    <div class="label">Napomena (opciono)</div>
-    <textarea class="input" rows="4" [(ngModel)]="notes" placeholder="Kratka napomena…"></textarea>
+    <div class="label">Napomena </div>
+    <textarea class="input" rows="4" [(ngModel)]="notes" placeholder="Opciono"></textarea>
     <div class="row mt">
       <button class="btn ok" (click)="complete()">Označi kao realizovan</button>
       <button class="btn warn" (click)="cancel()">Otkaži</button>

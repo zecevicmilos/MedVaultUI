@@ -12,6 +12,7 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./dashboard.component.scss'],
   standalone: true,
   imports: [CommonModule, RouterModule]
+  
 })
 export class DashboardComponent implements OnInit {
   loading = false;
@@ -22,7 +23,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit(){
  if (this.auth.role?.toLowerCase() === 'doctor'){
       this.loading = true;
-      // koristi brzi endpoint; po želji zameni za forDoctor({...})
+      
       this.enc.myUpcoming().subscribe({
         next: rows => { this.upcoming = rows; this.loading = false; },
         error: _ => { this.loading = false; }

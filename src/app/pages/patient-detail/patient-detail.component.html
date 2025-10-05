@@ -2,6 +2,19 @@
   <h3> {{info.firstName}} {{info.lastName}} <small class="badge">Broj medicinskog kartona:
       {{info.medicalRecordNumber}}</small> </h3> <small class="muted">Kreirano: {{info.createdAt |
     date:'short'}}</small>
+    <div class="row" *ngIf="auth.role==='Admin'" style="gap:.5rem; margin-top:.5rem">
+  <ng-container *ngIf="!isEditing">
+    <button class="btn btn-blue-compact" (click)="startEdit()">Uredi</button>
+    <button class="btn btn-ghost-danger" (click)="deletePatient()">Obriši pacijenta</button>
+  </ng-container>
+
+  <ng-container *ngIf="isEditing">
+    <button class="btn pri btn-compact"
+            (click)="savePatient()"
+            [disabled]="!editFirstName.trim() || !editLastName.trim()">Sačuvaj izmene</button>
+    <button class="btn" (click)="cancelEdit()">Otkaži</button>
+  </ng-container>
+</div>
   <div class="tabs mt">
     <div class="tab" [class.active]="tab==='ov'" (click)="tab='ov'">Osnovno</div>
     <div class="tab" [class.active]="tab==='id'" (click)="tab='id'">Lični dokumenti</div>
@@ -11,17 +24,26 @@
   <div *ngIf="tab==='ov'" class="grid" style="grid-template-columns:1fr 1fr">
     <div>
       <div class="label">Ime</div>
-      <div class="input read-centered" style="background:#f8fafc">{{info.firstName}}</div>
+   
+    <div class="input read-centered" style="background:#f8fafc" *ngIf="!isEditing">{{info.firstName}}</div>
+
+    <!-- edit -->
+    <input class="input" *ngIf="isEditing" [(ngModel)]="editFirstName" />
     </div>
-    <div>
-      <div class="label">Prezime</div>
-      <div class="input read-centered" style="background:#f8fafc">{{info.lastName}}</div>
-    </div>
+  <!-- Prezime -->
+  <div>
+    <div class="label">Prezime</div>
+
+    <div class="input read-centered" style="background:#f8fafc" *ngIf="!isEditing">{{info.lastName}}</div>
+
+    <input class="input" *ngIf="isEditing" [(ngModel)]="editLastName" />
+  </div>
     <div class="row" style="margin-bottom:.75rem">
       <div class="label" style="margin:0">Odeljenje</div>
-      <div class="input read-centered" style="background:#f8fafc; max-width:320px;">
-        {{ deptName || 'N/A' }}
-      </div>
+      <div class="input read-centered" style="background:#f8fafc; max-width:320px;" *ngIf="!isEditing">
+      {{ deptName || 'N/A' }}
+    </div>
+    
     </div>
   </div>
   <!-- Skenirani dokumenti -->
@@ -159,7 +181,7 @@
     </table>
     <p *ngIf="!encs.length" class="mt"><small class="muted">Nema poseta.</small></p> 
     <div class="card" *ngIf="completeId">
-      <div class="label">Napomena (opciono)</div> <input class="input" [(ngModel)]="completeNotes"
+      <div class="label">Napomena</div> <input class="input" [(ngModel)]="completeNotes"
         placeholder="Kratka napomena…" />
       <div class="inline-complete-actions"> <button class="btn ok" style="max-width: min-content;"
           (click)="saveComplete()">Sačuvaj</button> <button class="btn" (click)="completeId=undefined">Odustani</button>

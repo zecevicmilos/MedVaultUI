@@ -14,6 +14,7 @@ import { ToastService } from '../../core/toast.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-patient-detail',
@@ -30,7 +31,7 @@ export class PatientDetailComponent implements OnInit {
   iddocs: IdentityDocRow[] = [];
   encs: EncounterRow[] = [];
   deptName = '';
-  private depts: Department[] = [];
+   depts: Department[] = [];
   apStart = new Date().toISOString().substring(0, 16);
   apReason = '';
   completeId?: string;
@@ -41,6 +42,10 @@ export class PatientDetailComponent implements OnInit {
   idIssue?: string;
   idExpiry?: string;
   idFile?: File;
+  isEditing = false;
+  editFirstName = '';
+  editLastName = '';
+  editDeptId?: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -50,7 +55,8 @@ export class PatientDetailComponent implements OnInit {
     private encsApi: EncountersService,
     private depsApi: DepartmentsService,
     public auth: AuthService,
-    private toast: ToastService
+    private toast: ToastService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -68,14 +74,57 @@ export class PatientDetailComponent implements OnInit {
     this.deptName = d?.name ?? '';
   }
 
-  loadAll() {
-    this.patients.get(this.id).subscribe(x => { this.info = x; this.setDeptName(); });
+loadAll() {
+    this.patients.get(this.id).subscribe(x => {
+      this.info = x;
+      this.setDeptName();
+
+      // inicijalizuj edit polja
+      this.editFirstName = x.firstName || '';
+      this.editLastName = x.lastName || '';
+      this.editDeptId = (x as any).departmentId || undefined;
+    });
     this.refreshScans();
     this.refreshIdDocs();
     this.refreshEnc();
   }
 
+  // ===== ADMIN AKCIJE =====
+  startEdit() { this.isEditing = true; }
+  cancelEdit() {
+    if (!this.info) return;
+    this.editFirstName = this.info.firstName || '';
+    this.editLastName  = this.info.lastName  || '';
+    this.editDeptId    = (this.info as any).departmentId || undefined;
+    this.isEditing = false;
+  }
 
+  savePatient() {
+    const body = {
+      firstName: this.editFirstName.trim(),
+      lastName: this.editLastName.trim(),
+      departmentId: this.editDeptId || null
+    };
+    if (!body.firstName || !body.lastName) {
+      this.toast.show('Ime i prezime su obavezni', 'warn');
+      return;
+    }
+    this.patients.update(this.id, body).subscribe({
+      next: () => { this.toast.show('Sačuvano', 'ok'); this.isEditing = false; this.loadAll(); },
+      error: () => this.toast.show('Greška pri čuvanju', 'err')
+    });
+  }
+
+  deletePatient() {
+    if (!confirm('Da li sigurno želiš da obrišeš pacijenta? Ova akcija je trajna.')) return;
+    this.patients.delete(this.id).subscribe({
+      next: () => {
+        this.toast.show('Pacijent obrisan', 'ok');
+        this.router.navigate(['/patients']);   // ili history.back();
+      },
+      error: () => this.toast.show('Brisanje nije uspelo', 'err')
+    });
+  }
 
   refreshScans() { this.records.list(this.id).subscribe(x => this.recs = x); }
 
